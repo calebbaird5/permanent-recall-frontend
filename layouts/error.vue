@@ -1,44 +1,28 @@
 <template>
   <v-app dark>
-    <h1 v-if="error.statusCode === 404">
-      {{ pageNotFound }}
-    </h1>
-    <h1 v-else>
-      {{ otherError }}
-    </h1>
-    <NuxtLink to="/">
-      Home page
-    </NuxtLink>
+    <h1 v-if="error.statusCode === 404"> {{ pageNotFound }} </h1>
+    <h1 v-else> {{ otherError }} </h1>
+    <NuxtLink to="/"> Home page </NuxtLink>
   </v-app>
 </template>
 
-<script>
-export default {
-  layout: 'empty',
-  props: {
-    error: {
-      type: Object,
-      default: null
-    }
-  },
-  data () {
-    return {
-      pageNotFound: '404 Not Found',
-      otherError: 'An error occurred'
-    }
-  },
-  head () {
-    const title =
-      this.error.statusCode === 404 ? this.pageNotFound : this.otherError
-    return {
-      title
-    }
-  }
-}
+<script lang="ts" setup="setup">
+
+  import { ref, computed } from 'vue'
+import { useMeta } from 'vue-meta'
+
+const props = defineProps({
+  error: Error,
+})
+
+const pageNotFound = ref('404 Not Found');
+const otherError = ref('An error occurred');
+
+useMeta({
+  title: error.statusCode === 404 ? pageNotFound : otherError,
+});
 </script>
 
-<style scoped>
-h1 {
-  font-size: 20px;
-}
+<style lang="scss" scoped>
+h1 { font-size: 20px; }
 </style>

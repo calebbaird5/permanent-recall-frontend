@@ -1,9 +1,10 @@
 import axios from 'axios';
-import authStore from '../store/auth'
-const Querystring = require('querystring');
+import  * as Querystring   from 'querystring'
+import { useAuthStore } from '@/store/auth'
+// const auth = useAuthStore();
 
 export function encodeQueryString(options: ParsedQs) {
-  let corrected = {};
+  let corrected: ParsedQs = {};
   for(let k in options) {
     let value = options[k];
     if(k == "include") k = "include[]";
@@ -35,8 +36,8 @@ export class CommonAPI {
   basePath = '';
   apiPath = '/api/';
   fullResponse = false;
-  totalRecords: number;
-  totalRecordPages: number;
+  totalRecords = 0;
+  totalRecordPages = 0;
 
   constructor(basePath = '') {
     this.basePath = basePath;
@@ -96,13 +97,19 @@ export class CommonAPI {
     return this.create(data);
   }
 
-  delete(id: string, force: boolean) {
+  delete(id: string, force: boolean = false) {
     let params: ParsedQs = {};
     if (force) params.force = 'true';
     return this._request(id, 'delete', params, {});
   }
 
-  _request(endpoint = '', verb = '', params: ParsedQs = {}, body: any = null) {
+
+  async _request(
+    endpoint = '',
+    verb: 'get'|'post'|'put'|'delete',
+    params: ParsedQs = {},
+    body: any = null
+  ) {
     let url = '';
     if (endpoint) {
       url = this.apiPath + this.basePath + '/' + endpoint;
@@ -119,45 +126,42 @@ export class CommonAPI {
       // console.log('No baseUrl:');
     }
 
-    let authToken = authStore.getters.token;
+    // let authToken = auth.token || '';
 
-    if(authToken && authToken.length > 0) {
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + authToken;
-      // console.log('Use authToken: ' + authToken);
-    }else{
-      // console.log('No authToken: ');
-    }
+    // if(authToken && authToken.length > 0) {
+    //   axios.defaults.headers.common['Authorization'] = 'Bearer ' + authToken;
+    //   // console.log('Use authToken: ' + authToken);
+    // }else{
+    //   // console.log('No authToken: ');
+    // }
 
 
     let queryParams = encodeQueryString(params);
     if (queryParams) url += '?' + queryParams;
 
-    return axios[verb](url, body).then(
-      (response: Response) => {
-
-        // console.log('CommonAPI. response. url: ' + url);
-        // console.log(response);
-        // console.log(response.data);
-        this.totalRecords = parseInt(response.headers['x-total']);
-        this.totalRecordPages = parseInt(response.headers['x-total-pages']);
-        if(this.fullResponse) {
-          return response.data;
-        }else{
-          return response.data.data;
-        }
-      },
-      (err: any) => {
-        if (err.response && err.response.data && err.response.data.errorMessage) {
-          return Promise.reject(err.response.data.errorMessage);
-        }
-        throw err;
+    try {
+      let response: Response = await axios[verb](url, body)
+      // console.log('CommonAPI. response. url: ' + url);
+      // console.log(response);
+      // console.log(response.data);
+      this.totalRecords = parseInt(response?.headers['x-total'] || '');
+      this.totalRecordPages = parseInt(response?.headers['x-total-pages'] || '');
+      if(this.fullResponse) {
+        return response.data;
+      }else{
+        return response.data.data;
       }
-    );
+    } catch(err: any) {
+      if (err?.response?.data?.errorMessage) {
+        throw err.response.data.errorMessage
+      }
+      throw err;
+    }
   }
 
   getBaseURL(
     id: string,
-    params: ParsedQs = { offset: null, limit: null },
+    params: ParsedQs = { offset: '', limit: '' },
     offset = 0,
     limit = 20,
     overridePath = ''

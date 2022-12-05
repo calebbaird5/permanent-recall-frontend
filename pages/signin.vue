@@ -14,45 +14,53 @@
       required
     />
 
-    <v-btn :disabled="!valid" color="success" @click="signin">
+    <v-btn v-if="submitting" color="success">
+      <v-progress-circular indeterminate color="black" /> </v-btn>
+    <v-btn v-else :disabled="!valid" color="success" @click="signin">
       Sign In</v-btn>
-    <v-btn @click="$router.push('/register')">Register</v-btn>
+
+    <v-btn @click="router.push('/register')">Register</v-btn>
   </v-form>
 </template>
-<script lang="ts">
-  import Vue from 'vue';
-  import FormMixin from '@/mixins/form';
-  import { mapMutations } from 'vuex';
-  import { CommonAPI } from '../api/common';
 
-  export default Vue.extend({
-    name: 'Signin',
-    mixins: [FormMixin],
+<script lang="ts" setup="setup">
+	import { ref, computed } from 'vue'
+import type { Ref } from 'vue'
 
-    data() {
-      return {
-        email: '',
-        password: '',
-        submitting: false,
-      };
-    },
+import { useAuthStore } from "@/stores/auth";
+const authStore = useAuthStore();
 
-    mounted() {
-      this.setPageTitle('Signin');
-    },
+import { useRouter, useRoute } from 'vue-router'
+import { CommonAPI } from '../api/common';
+const route = useRoute();
+const router = useRouter();
 
-    methods: {
-      ...mapMutations({
-        setPageTitle: 'general/setPageTitle'
-      }),
+const email = ref('');
+const password = ref('');
+const submitting = ref(false);
 
-      async signin() {
-        this.submitting = true;
-        try {
-          let api = new CommonAPI('users');
-        } catch(e) { console.error(e) }
-        this.submitting = false;
-      },
+const { valid, passwordRules, emailRules } = useFormValidation();
+
+async function signin() {
+  submitting.value = true;
+  try {
+    let api = new CommonAPI('auth/login');
+    let result = await api.create({
+      email: email.value,
+      password: password.value,
+    });
+		console.log('result',result)
+
+		let d = new Date();
+		d.setTime(d.getTime() + result.expiresIn);
+    authStore.login(result.user, result.token, d);
+
+    let redirect  = '/dashboard';
+    if (route.query.redirect && !Array.isArray(route.query.redirect)) {
+      redirect = route.query.redirect as string;
     }
-  })
+    router.push(redirect);
+  } catch(e) { console.error(e) }
+  submitting.value = false;
+};
 </script>

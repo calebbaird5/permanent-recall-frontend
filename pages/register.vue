@@ -1,105 +1,88 @@
 <template>
-  <v-form v-model="valid">
-    <v-text-field
-      v-model="firstName"
-      :rules="required"
-      label="First Name"
-      required
+<v-form v-model="valid">
+  <v-text-field
+    v-model="firstName"
+    :rules="required"
+    label="First Name"
+    required
     />
 
-    <v-text-field
-      v-model="lastName"
-      :rules="required"
-      label="Last Name"
-      required
+  <v-text-field
+    v-model="lastName"
+    :rules="required"
+    label="Last Name"
+    required
     />
 
-    <v-text-field
-      v-model="email"
-      :rules="emailRules"
-      label="Email"
-      required
+  <v-text-field
+    v-model="email"
+    :rules="emailRules"
+    label="Email"
+    required
     />
 
-    <v-text-field
-      type="password"
-      v-model="password"
-      label="Password"
-      :rules="passwordRules"
-      required
+  <v-text-field
+    type="password"
+    v-model="password"
+    label="Password"
+    :rules="passwordRules"
+    required
     />
 
-    <v-text-field
-      type="password"
-      v-model="passwordConfirm"
-      label="Confirm Password"
-      :rules="confirmPasswordRules"
-      required
+  <v-text-field
+    type="password"
+    v-model="passwordConfirm"
+    label="Confirm Password"
+    :rules="confirmPasswordRules"
+    required
     />
 
-    <v-btn v-if="submitting">
-      <v-progress-circular
-        indeterminate
-        color="primary"
-      ></v-progress-circular>
-    </v-btn>
-    <v-btn v-else :disabled="!valid" color="success" @click="register">
-      Register </v-btn>
-
-  </v-form>
+  <v-btn v-if="submitting" color="success">
+    <v-progress-circular indeterminate color="black" /> </v-btn>
+  <v-btn v-else :disabled="!valid" color="success" @click="register">
+    Register </v-btn>
+</v-form>
 </template>
-<script lang="ts">
-  import Vue from 'vue';
-  import FormMixin from '@/mixins/form';
-  import { mapMutations } from 'vuex'
-  import { CommonAPI } from '../api/common';
+<script lang="ts" setup="setup">
+  import { ref, computed } from 'vue'
+import type { Ref } from 'vue'
+import { authStore } from "../store/auth";
+import { useRouter, useRoute } from 'vue-router'
+import { CommonAPI } from '../api/common';
+const route = useRoute();
+const router = useRouter();
 
-  export default Vue.extend({
-    name: 'Register',
-    mixins: [FormMixin],
+const firstName = ref('');
+const lastName = ref('');
+const email = ref('');
+const password = ref('');
+const passwordConfirm = ref('');
+const submitting = ref(false);
+const { valid, passwordRules, emailRules, required } = useFormValidation();
+const confirmPasswordRules = computed(() => [
+  ...passwordRules.value,
+  (v: string) => v === password.value || 'Passwords do not match',
+]);
 
-    data() {
-      return {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        passwordConfirm: '',
-        submitting: false,
-      };
-    },
+async function register() {
+  submitting.value = true;
 
-    computed: {
-      confirmPasswordRules() {
-        return [
-          ...this.passwordRules,
-          (v: string) => v === this.password || 'Passwords do not match',
-        ];
-      },
-    },
+  try {
+    let api = new CommonAPI('auth/register');
+    let result = await api.create({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+    });
 
-    mounted() {
-      this.setPageTitle('Register');
-    },
-
-    methods: {
-      ...mapMutations({
-        setPageTitle: 'general/setPageTitle'
-      }),
-
-      async register() {
-        this.submitting = true;
-        try {
-          let api = new CommonAPI('users');
-          let createdUser = await api.create({
-            firstName: this.firstName,
-            lastName: this.lastName,
-            email: this.email,
-            password: this.password,
-          })
-        } catch(e) { console.error(e) }
-        this.submitting = false;
-      },
+    login(result);
+    let redirect  = '/dashboard';
+    if (route.query.redirect && !Array.isArray(route.query.redirect)) {
+      redirect = route.query.redirect as string;
     }
-  })
+    router.push(redirect);
+  } catch(e) { console.error(e) }
+  submitting.value = false;
+}
 </script>
