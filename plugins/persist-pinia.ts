@@ -3,13 +3,13 @@ import { createPersistedStatePlugin } from 'pinia-plugin-persistedstate-2'
 import Cookies from 'js-cookie'
 import cookie from 'cookie'
 
-export default function ({ $pinia, ssrContext }) {
+export default defineNuxtPlugin(({ $pinia, ssrContext }) => {
 	$pinia.use(
 		createPersistedStatePlugin({
 			storage: {
 				getItem: (key) => {
 					// See https://nuxtjs.org/guide/plugins/#using-process-flags
-					if (process.server) {
+					if (process.server && ssrContext) {
 						const parsedCookies = cookie.parse(ssrContext.req.headers.cookie)
 						return parsedCookies[key]
 					} else {
@@ -23,4 +23,4 @@ export default function ({ $pinia, ssrContext }) {
 			},
 		}),
 	)
-}
+});
