@@ -3,7 +3,7 @@
 		<v-col justify="center" align="center" >
 			<v-dialog v-model="dialog" persistent max-width="600px">
 				<template v-slot:activator="{ props }">
-					<v-btn color="primary" dark v-bind="props">
+					<v-btn color="primary" dark @click="triggerCreatePassage">
 						Create A New Passage </v-btn>
 				</template>
 				<v-card>
@@ -88,11 +88,35 @@ onMounted(() => {
 	}
 })
 
+watch(() => props.editing, (newValue) => {
+  dialog.value = newValue;
+});
+
+watch(() => props.passage, (newValue) => {
+  if (newValue) {
+    prompt.value = newValue.prompt;
+    reference.value = newValue.reference;
+    text.value = newValue.text;
+  } else {
+    prompt.value = '';
+    reference.value = '';
+    text.value = '';
+	}
+});
+
 const { required } = useFormValidation();
 
 function close() {
 	dialog.value = false;
   emit('closed');
+}
+
+function triggerCreatePassage() {
+	console.log('in triggerCreatePassage')
+	dialog.value = true;
+	prompt.value = '';
+	reference.value = '';
+	text.value = '';
 }
 
 async function save() {

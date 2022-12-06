@@ -1,77 +1,68 @@
 <template>
-<div class="rows">
-	<v-progress-circular v-if="loading" indeterminate color="black" />
-	<v-row
-		v-else
-		v-for="passage in passages"
-		:key="passage._id"
-		justify="center"
-		align="center"
-		>
-		<v-col>
+	<div class="rows">
+		<v-progress-circular v-if="loading" indeterminate color="black" />
+		<v-row
+			v-else
+			v-for="passage in passages"
+			:key="passage._id"
+			justify="center"
+			align="center"
+			>
+			<v-col>
+				<v-card>
+					<v-card-title @click="handleClick('prompt', passage)">
+						<v-btn @click.stop="clickEdit(passage)" icon >
+							<v-icon icon="mdi-pencil" />
+						</v-btn>
+						<span class="prompt"> {{ passage.prompt }} </span>
+						<v-btn @click.stop="clickTrash(passage)" icon >
+							<v-icon color="red" icon="mdi-delete" />
+						</v-btn>
+					</v-card-title>
+
+					<v-card-subtitle
+						class="reference"
+						v-if="passage.displayReference"
+						@click="handleClick('reference', passage)"
+						>
+						{{ passage.reference }}
+					</v-card-subtitle>
+
+					<v-card-text v-if="passage.displayText" >
+						{{ passage.text }}
+					</v-card-text>
+				</v-card>
+			</v-col>
+		</v-row>
+
+		<UpsertPassage
+			class="create"
+			:editing="editing"
+			:passage="passageToEdit"
+			@closed="stopEditing"
+			@passageCreated="addPassage"
+			@passageUpdated="updatePassage"
+			/>
+
+
+		<v-dialog v-model="confirmDelete" max-width="600px">
 			<v-card>
-				<v-card-title @click="handleClick('prompt', passage)">
-					<v-btn @click.stop="clickEdit(passage)" icon >
-						<v-icon icon="mdi-pencil" />
-					</v-btn>
-					<span class="prompt"> {{ passage.prompt }} </span>
-					<v-btn @click.stop="clickTrash(passage)" icon >
-						<v-icon color="red" icon="mdi-delete" />
-					</v-btn>
+				<v-card-title>
+					<span class="text-h5"> Are you sure you want to delete this passage?</span>
 				</v-card-title>
-
-				<v-card-subtitle
-					class="reference"
-					v-if="passage.displayReference"
-					@click="handleClick('reference', passage)"
-					>
-					{{ passage.reference }}
-				</v-card-subtitle>
-
-				<v-card-text v-if="passage.displayText" >
-					{{ passage.text }}
+				<v-card-text>
+					This cannot be undone and will make you loose all reveiw history for this passage.
 				</v-card-text>
+				<v-card-actions>
+					<v-spacer></v-spacer>
+					<v-btn color="blue darken-1" text @click="confirmDelete = false">
+						Never Mind </v-btn>
+					<v-btn color="blue darken-1" text :loaining="deleting" @click="deletePassage">
+						Yes Delete </v-btn>
+				</v-card-actions>
 			</v-card>
-		</v-col>
-	</v-row>
-
-	<UpsertPassage
-		class="create"
-		:editing="editing"
-		:passage="passageToEdit"
-		@closed="stopEditing"
-		@passageCreated="addPassage"
-		@passageUpdated="updatePassage"
-		/>
-
-
-	<!-- <v-dialog v-model="confirmDelete" max-width="600px"> -->
-	<!-- 	<v-card> -->
-	<!-- 		<v-card-title> -->
-	<!-- 			<span class="text-h5"> -->
-	<!-- 				Are you sure you want to delete this passage?</span> -->
-	<!-- 		</v-card-title> -->
-	<!-- 		<v-card-text> -->
-	<!-- 			This cannot be undone and will make you loose all reveiw history for this passage. -->
-	<!-- 		</v-card-text> -->
-	<!-- 		<v-card-actions> -->
-	<!-- 			<v-spacer></v-spacer> -->
-	<!-- 			<v-btn -->
-	<!-- 				color="blue darken-1" -->
-	<!-- 				text -->
-	<!-- 				@click="confirmDelete = false" -->
-	<!-- 				> Nevermind </v-btn> -->
-
-	<!-- 			<v-btn -->
-	<!-- 				color="blue darken-1" -->
-	<!-- 				text -->
-	<!-- 				:loaining="deleting" -->
-	<!-- 				@click="deletePassage" -->
-	<!-- 				> Yes Delete </v-btn> -->
-	<!-- 		</v-card-actions> -->
-	<!-- 	</v-card> -->
-	<!-- </v-dialog> -->
-</div>
+		</v-dialog>
+	</div>
 </template>
 
 <script lang="ts" setup="setup">
@@ -138,9 +129,9 @@ async function deletePassage() {
   deleting.value = true;
   try {
     let api = new CommonAPI('passages');
-    await api.delete(passageToDelete._id);
+    await api.delete(passageToDelete.value._id);
     passages.value = passages.value.filter(el =>
-      el._id !== passageToDelete._id);
+      el._id !== passageToDelete.value._id);
     passageToDelete = null;
   } catch(e) { console.error(e); }
   deleting.value = false;
@@ -148,14 +139,11 @@ async function deletePassage() {
 }
 
 function clickTrash(passage: Passage) {
-	console.log('in clickTrash')
   passageToDelete.value = passage;
   confirmDelete.value = true;
-	console.log('')
 }
 
 function clickEdit(passage: Passage) {
-	console.log('in clickEdit')
   passageToEdit.value = passage;
   editing.value = true;
 }
