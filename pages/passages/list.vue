@@ -67,18 +67,10 @@
 
 <script lang="ts" setup="setup">
 	import type { Ref } from 'vue';
-import { authStore } from "../store/auth";
-import { onBeforeMount } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import { CommonAPI } from '../api/common';
-import { Passage } from '../models';
-const route = useRoute();
-const router = useRouter();
+import { CommonAPI } from '../../api/common';
+import { Passage } from '../../models';
 
-// definePageMeta({
-//   middleware: ['auth']
-// })
-
+definePageMeta({middleware: ['auth']});
 const passages: Ref<Passage[]> = ref([]);
 const passageToDelete: Ref<Passage | null> = ref(null);
 const passageToEdit: Ref<Passage | null> = ref(null);
@@ -88,7 +80,6 @@ const editing = ref(false);
 const loading = ref(false);
 
 onMounted(async () => {
-	// await useAuthorization('/passages', router);
   loading.value = true;
   try {
     let api = new CommonAPI('passages');

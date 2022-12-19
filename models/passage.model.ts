@@ -7,3 +7,9 @@ export interface Passage {
 	displayReference?: Boolean;
 	displayText?: Boolean;
 }
+
+export interface DiffWord {
+	expected: string;
+	entered: string;
+	correct: false;
+}

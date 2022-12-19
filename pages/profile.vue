@@ -59,9 +59,9 @@ import { Passage } from '@/models';
 const route = useRoute();
 const router = useRouter();
 import { UpdateUser } from '@/models';
-// import { useAuthStore } from '@/store/auth'
+const { required } = useFormValidation();
 
-// useAuthorization('/dashbaord', router)
+definePageMeta({middleware: ['auth']});
 
 const changePassword = ref(false);
 const submitting = ref(false);
@@ -71,13 +71,16 @@ const email = ref('');
 const password = ref('');
 const passwordConfirm = ref('');
 const { valid, passwordRules, emailRules } = useFormValidation();
-// const auth = useAuthStore();
+import { useAuthStore } from '@/stores/auth'
+const auth = useAuthStore();
 
-// onMounted(async () => {
-//   firstName.value = auth.user.firstName;
-//   lastName.value = auth.user.lastName;
-//   email.value = auth.user.email;
-// });
+onMounted(async () => {
+	if (auth?.user) {
+		firstName.value = auth.user.firstName;
+		lastName.value = auth.user.lastName;
+		email.value = auth.user.email;
+	}
+});
 
 const confirmPasswordRules = computed(() => [
   ...passwordRules.value,
@@ -85,21 +88,23 @@ const confirmPasswordRules = computed(() => [
 ]);
 
 async function updateUser() {
-  submitting.value = true;
-  try {
-    let api = new CommonAPI('users');
-    let data: UpdateUser = {
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-    }
-    if (changePassword && password) {
-      data.password = password;
-    }
-    let updatedUser = await api.update(user._id, data);
-		// authStore.setUser(updatedUser);
+	if (auth?.user?._id) {
+		submitting.value = true;
+		try {
+			let api = new CommonAPI('users');
+			let data: UpdateUser = {
+				firstName: firstName.value,
+				lastName: lastName.value,
+				email: email.value
+			};
+			if (changePassword.value && password.value) {
+				data.password = password.value;
+			}
+			let updatedUser = await api.update(auth.user._id, data);
+			auth.setUser(updatedUser);
 
-  } catch(e) { console.error(e) }
-  submitting.value = false;
+		} catch(e) { console.error(e) }
+		submitting.value = false;
+	}
 }
 </script>

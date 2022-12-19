@@ -24,6 +24,10 @@ export const useAuthStore = defineStore({
 			this.token = '';
 			this.expires = new Date(0);
 		},
+
+		setUser(user: User) {
+			this.user = user;
+		}
 	},
 	getters: {},
 })

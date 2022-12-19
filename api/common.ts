@@ -1,6 +1,6 @@
 import axios from 'axios';
 import  * as Querystring   from 'querystring'
-import { useAuthStore } from '@/store/auth'
+// import { useAuthStore } from '@/stores/auth'
 // const auth = useAuthStore();
 
 export function encodeQueryString(options: ParsedQs) {
@@ -130,9 +130,9 @@ export class CommonAPI {
 
     // if(authToken && authToken.length > 0) {
     //   axios.defaults.headers.common['Authorization'] = 'Bearer ' + authToken;
-    //   // console.log('Use authToken: ' + authToken);
+    //   console.log('Use authToken: ' + authToken);
     // }else{
-    //   // console.log('No authToken: ');
+    //   console.log('No authToken: ');
     // }
 
 

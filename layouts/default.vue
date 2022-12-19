@@ -68,7 +68,8 @@ interface MenuItem {
 
 const items: Ref<MenuItem[]> = ref([
 	{ title: 'Dashboard', to: '/dashboard', private: true },
-	{ title: 'Passages', to: '/passages', private: true },
+	{ title: 'Passage List', to: '/passages/list', private: true },
+	{ title: 'Passage Review', to: '/passages/review', private: true },
 	{ title: 'Welcome', to: '/', private: false, pageTitle: 'Permanent Recall' },
 	{ title: 'Sign In', to: '/signin', private: false },
 	{ title: 'Register', to: '/register', private: false },

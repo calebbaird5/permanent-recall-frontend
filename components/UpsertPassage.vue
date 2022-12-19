@@ -45,7 +45,7 @@
 						<v-btn
 							color="blue darken-1"
 							text
-							:loaining="submitting"
+							:loading="submitting"
 							@click="save"
 							> Save </v-btn>
 					</v-card-actions>
@@ -70,10 +70,7 @@ const emit = defineEmits<{
 import type { Ref } from 'vue'
 import { Passage } from '@/models';
 import { CommonAPI } from '@/api/common';
-import { useRouter, useRoute } from 'vue-router'
 
-const route = useRoute();
-const router = useRouter();
 const prompt = ref('');
 const reference = ref('');
 const text = ref('');
@@ -112,7 +109,6 @@ function close() {
 }
 
 function triggerCreatePassage() {
-	console.log('in triggerCreatePassage')
 	dialog.value = true;
 	prompt.value = '';
 	reference.value = '';
