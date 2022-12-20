@@ -77,6 +77,7 @@ const items: Ref<MenuItem[]> = ref([
 
 const profileItems: Ref<MenuItem[]> = ref([
 	{ title: 'Profile', to: '/profile' },
+	{ title: 'Settings', to: '/settings' },
 	{ title: 'Log Out' },
 ]);
 

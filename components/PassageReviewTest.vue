@@ -77,12 +77,29 @@ enum FieldStatus {
 	correct,
 }
 
-const stringDiff = (entered: string, expected: string): DiffWord => {
+import { useSettingsStore } from '@/stores/settings'
+const settings = useSettingsStore();
+
+function isCorrect(entered: string, expected: string): boolean {
+	if (!settings.strictCapitalization.value) {
+		entered = entered.toUpperCase();
+		expected = expected.toUpperCase();
+	}
+
+	if (!settings.strictPunctuation.value) {
+		entered = entered.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '');
+		expected = expected.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '');
+	}
+
+	return entered === expected;
+}
+
+function stringDiff(entered: string, expected: string): DiffWord {
 	let enteredWords = entered.split(' ');
 	let expectedWords = expected.split(' ');
 	let result = enteredWords.map((el, i) => {
 		let expected = i < expectedWords.length ? expectedWords[i] : '';
-		return {entered: el, expected, correct: el === expected}
+		return { entered: el, expected, correct: isCorrect(el, expected) }
 	});
 	if (enteredWords.length < expectedWords.length
 		&& enteredWords[enteredWords.length - 1]) {
@@ -108,8 +125,7 @@ const textDiff = computed(() => stringDiff(text.value, passage.text));
 const submitting = ref(false);
 
 function checkReference() {
-	let correct = passage.reference.toUpperCase()
-		=== reference.value.toUpperCase();
+	let correct = referenceDiff.value.every(el => el.correct);
 	if (correct) {
 		referenceStatus.value = FieldStatus.correct;
 	} else {
@@ -120,8 +136,7 @@ function checkReference() {
 }
 
 function checkText() {
-	let correct = passage.text.toUpperCase()
-		=== text.value.toUpperCase();
+	let correct = textDiff.value.every(el => el.correct);
 	if (correct) {
 		textStatus.value = FieldStatus.correct;
 	} else {

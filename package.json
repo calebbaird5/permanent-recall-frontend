@@ -27,6 +27,7 @@
     "query-string": "^7.1.1",
     "querystring": "^0.2.1",
     "sass": "^1.52.1",
+    "vue-final-modal": "3",
     "vue-router": "^4.0.13",
     "vuetify": "^3.0.1"
   }

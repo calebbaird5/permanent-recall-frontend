@@ -1,7 +1,7 @@
 <template>
 	<span v-if="value && value.correct"
 				:class="{'diff-word': true, incorrect: !value || !value.correct}"
-				>{{  value.entered }}</span>
+				>{{  value.expected }}</span>
 	<v-dialog v-else v-model="dialog">
 		<template #activator>
 			<button
