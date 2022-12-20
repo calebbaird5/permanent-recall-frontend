@@ -1,32 +1,37 @@
 import { defineStore } from 'pinia'
 import { CommonAPI } from '@/api/common';
-import { Setting } from '~~/models/setting.model';
+import { Setting } from '~/models/setting.model';
+import _ from 'lodash';
 
 interface BooleanSetting {
 	value: boolean,
 	setting: Setting,
 }
 
+const defaultStrictCapitalization: BooleanSetting = {
+	value: false,
+	setting: {
+		_id: '',
+		name: 'strict-capitalization',
+		value: 'false',
+	},
+}
+
+const defaultStrictPunctuation: BooleanSetting = {
+	value: false,
+	setting: {
+		_id: '',
+		name: 'strict-punctuation',
+		value: 'false',
+	},
+}
+
 export const useSettingsStore = defineStore({
 	id: 'settings-store',
 	state: () => {
 		return {
-			strictCapitalization: {
-				value: false,
-				setting: {
-					_id: '',
-					name: 'strict-capitalization',
-					value: 'false',
-				},
-			} as BooleanSetting,
-			strictPunctuation: {
-				value: false,
-				setting: {
-					_id: '',
-					name: 'strict-punctuation',
-					value: 'false',
-				},
-			} as BooleanSetting,
+			strictCapitalization: _.cloneDeep(defaultStrictCapitalization),
+			strictPunctuation: _.cloneDeep(defaultStrictPunctuation),
 		}
 	},
 	actions: {
@@ -41,6 +46,8 @@ export const useSettingsStore = defineStore({
 						value: capitalizationSetting.value === 'true',
 						setting: capitalizationSetting,
 					}
+				} else {
+					this.resetStrictCapitalization();
 				}
 
 				let punctuationSetting = userSettings.find(el =>
@@ -50,9 +57,16 @@ export const useSettingsStore = defineStore({
 						value: punctuationSetting.value === 'true',
 						setting: punctuationSetting,
 					}
+				} else {
+					this.resetStrictPunctuation();
 				}
 
 			} catch (e) { console.error(e) }
+		},
+
+		resetUserSettings() {
+			this.resetStrictCapitalization();
+			this.resetStrictPunctuation();
 		},
 
 		setStrictCapitalization(setting: Setting) {
@@ -67,6 +81,14 @@ export const useSettingsStore = defineStore({
 				setting,
 				value: setting.value === 'true',
 			};
+		},
+
+		resetStrictCapitalization() {
+			this.strictCapitalization = _.cloneDeep(defaultStrictCapitalization);
+		},
+
+		resetStrictPunctuation() {
+			this.strictPunctuation = _.cloneDeep(defaultStrictPunctuation);
 		},
 	},
 	getters: {},

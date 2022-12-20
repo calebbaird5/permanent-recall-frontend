@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { User } from '@/models/user.model';
+import { useSettingsStore } from '@/stores/settings'
 
 export const useAuthStore = defineStore({
 	id: 'auth-store',
@@ -17,12 +18,17 @@ export const useAuthStore = defineStore({
 			this.token = token;
 			this.expires = expires;
 			this.loggedIn = true;
+			const settings = useSettingsStore();
+			settings.loadUserSettings();
 		},
 
 		logout() {
 			this.user = null;
 			this.token = '';
 			this.expires = new Date(0);
+			this.loggedIn = false;
+			const settings = useSettingsStore();
+			settings.resetUserSettings();
 		},
 
 		setUser(user: User) {

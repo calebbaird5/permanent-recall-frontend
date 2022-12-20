@@ -23,7 +23,8 @@
 </template>
 
 <script lang="ts" setup="setup">
-	import { CommonAPI } from '@/api/common';
+	definePageMeta({middleware: ['auth']});
+import { CommonAPI } from '@/api/common';
 
 const strictPunctuation = ref(false);
 const strictCapitalization = ref(false);
