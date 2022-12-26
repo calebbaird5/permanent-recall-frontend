@@ -62,8 +62,6 @@ function fix() {
 	} else {
 		console.log(value.value)
 	}
-
-
 }
 
 function update() {
@@ -83,9 +81,4 @@ function update() {
 		background: #F005;
 	}
 }
-
-:deep(.no-text-transform) {
-	text-transform: none;
-}
-
 </style>

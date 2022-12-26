@@ -1,5 +1,18 @@
 <template>
 	<div class="rows">
+		<v-row>
+			<v-col cols="12" align="center">
+				<UpsertPassage
+					class="create"
+					:editing="editing"
+					:passage="passageToEdit"
+					:allowImport="!passageToEdit"
+					@closed="stopEditing"
+					@passageCreated="addPassage"
+					@passageUpdated="updatePassage"
+					/>
+			</v-col>
+		</v-row>
 		<v-progress-circular v-if="loading" indeterminate color="black" />
 		<v-row
 			v-else
@@ -10,14 +23,19 @@
 			>
 			<v-col>
 				<v-card>
-					<v-card-title @click="handleClick('prompt', passage)">
-						<v-btn @click.stop="clickEdit(passage)" icon >
-							<v-icon icon="mdi-pencil" />
-						</v-btn>
+					<v-card-title class="card-title" @click="handleClick('prompt', passage)">
 						<span class="prompt"> {{ passage.prompt }} </span>
-						<v-btn @click.stop="clickTrash(passage)" icon >
-							<v-icon color="red" icon="mdi-delete" />
-						</v-btn>
+						<v-btn
+							@click.stop="clickEdit(passage)"
+							icon="mdi-pencil"
+							size="small"
+							/>
+						<v-spacer />
+						<v-btn
+							@click.stop="clickTrash(passage)"
+							icon="mdi-delete"
+							class="text-red"
+							/>
 					</v-card-title>
 
 					<v-card-subtitle
@@ -35,16 +53,6 @@
 			</v-col>
 		</v-row>
 
-		<UpsertPassage
-			class="create"
-			:editing="editing"
-			:passage="passageToEdit"
-			@closed="stopEditing"
-			@passageCreated="addPassage"
-			@passageUpdated="updatePassage"
-			/>
-
-
 		<v-dialog v-model="confirmDelete" max-width="600px">
 			<v-card>
 				<v-card-title>
@@ -55,9 +63,9 @@
 				</v-card-text>
 				<v-card-actions>
 					<v-spacer></v-spacer>
-					<v-btn color="blue darken-1" text @click="confirmDelete = false">
+					<v-btn color="blue darken-1" @click="confirmDelete = false">
 						Never Mind </v-btn>
-					<v-btn color="blue darken-1" text :loaining="deleting" @click="deletePassage">
+					<v-btn color="red darken-1" :loaining="deleting" @click="deletePassage">
 						Yes Delete </v-btn>
 				</v-card-actions>
 			</v-card>
@@ -66,11 +74,9 @@
 </template>
 
 <script lang="ts" setup="setup">
-	import type { Ref } from 'vue';
-import { CommonAPI } from '../../api/common';
+	definePageMeta({middleware: ['auth']});
 import { Passage } from '../../models';
 
-definePageMeta({middleware: ['auth']});
 const passages: Ref<Passage[]> = ref([]);
 const passageToDelete: Ref<Passage | null> = ref(null);
 const passageToEdit: Ref<Passage | null> = ref(null);
@@ -79,6 +85,7 @@ const deleting = ref(false);
 const editing = ref(false);
 const loading = ref(false);
 
+import { CommonAPI } from '../../api/common';
 onMounted(async () => {
   loading.value = true;
   try {
@@ -164,6 +171,11 @@ function handleClick(label: string, passage: Passage) {
 </script>
 
 <style lang="scss" scoped>
+.card-title {
+	display: flex;
+	align-items: center;
+}
+
 .v-card {
   margin: 10px;
 }

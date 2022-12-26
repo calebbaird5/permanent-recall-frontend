@@ -7,7 +7,11 @@
         </v-card-title>
         <v-card-text>
           <p>
-            <a href="/signin">Login</a> or <a href="/signin">Register</a> to get started</p>
+						<v-btn @click="router.push('/signin')">Login</v-btn>
+            or
+						<v-btn @click="router.push('/register')">Register</v-btn>
+						to get started
+					</p>
         </v-card-text>
       </v-card>
     </v-col>
@@ -15,5 +19,6 @@
 </template>
 
 <script lang="ts" setup="setup">
-
+	import { useRouter } from 'vue-router'
+const router = useRouter();
 </script>

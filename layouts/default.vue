@@ -68,8 +68,7 @@ interface MenuItem {
 
 const items: Ref<MenuItem[]> = ref([
 	{ title: 'Dashboard', to: '/dashboard', private: true },
-	{ title: 'Passage List', to: '/passages/list', private: true },
-	{ title: 'Passage Review', to: '/passages/review', private: true },
+	{ title: 'Passages', to: '/passages', private: true },
 	{ title: 'Welcome', to: '/', private: false, pageTitle: 'Permanent Recall' },
 	{ title: 'Sign In', to: '/signin', private: false },
 	{ title: 'Register', to: '/register', private: false },
@@ -91,8 +90,10 @@ const userInitials = computed(() =>
   auth.user.firstName.toUpperCase()[0]
   + auth.user.lastName.toUpperCase()[0]);
 
-const menuItems = computed(() =>
-	items.value.filter(el => auth.loggedIn === el.private))
+const menuItems = computed(() => {
+	console.log('auth.loggedIn', auth.loggedIn)
+	return items.value.filter(el => !!auth.loggedIn === el.private)
+})
 
 const activeItem = computed(() =>
 	items.find(el => el.to === route.path));
@@ -118,5 +119,12 @@ function clickItem(item: MenuItem) {
 <style lang="scss" scoped>
 .v-avatar {
 	margin-right: 10px;
+}
+</style>
+
+<!-- Global styles -->
+<style lang="scss">
+.no-text-transform {
+	text-transform: none;
 }
 </style>

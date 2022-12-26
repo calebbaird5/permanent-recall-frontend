@@ -30,6 +30,7 @@
     "sass": "^1.52.1",
     "vue-final-modal": "3",
     "vue-router": "^4.0.13",
+    "vue3-datepicker": "^0.3.4",
     "vuetify": "^3.0.1"
   }
 }

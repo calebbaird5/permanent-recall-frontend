@@ -24,7 +24,6 @@
 				<v-col cols="12">
 					<v-textarea
 						ref="textInput"
-						filled
 						name="passage-text"
 						label="Text"
 						auto-grow
@@ -131,7 +130,6 @@ function checkReference() {
 	} else {
 		referenceStatus.value = FieldStatus.incorrect;
 	}
-	console.log('Reference is ' + (correct ? 'correct' : 'incorrect'))
 	return  correct;
 }
 
@@ -142,7 +140,6 @@ function checkText() {
 	} else {
 		textStatus.value = FieldStatus.incorrect;
 	}
-	console.log('Text is ' + (correct ? 'correct' : 'incorrect'))
 	return  correct;
 }
 
@@ -154,12 +151,9 @@ function checkAnswers() {
 
 function getUpdatedWords(original: string, newValue: string, index: number)
 : string {
-	console.log(original);
-	console.log('newValue: ', newValue);
 	let words = original.split(' ');
 	words.splice(index, 1, newValue);
 	let newVal = words.join(' ');
-	console.log(newVal)
 	return newVal;
 }
 

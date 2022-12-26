@@ -1691,6 +1691,11 @@ cookie@^0.5.0:
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.5.0.tgz#d1f5d71adec6558c58f389987c366aa47e994f8b"
   integrity sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==
 
+core-js@^3.21.1:
+  version "3.26.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.26.1.tgz#7a9816dabd9ee846c1c0fe0e8fcad68f3709134e"
+  integrity sha512-21491RRQVzUn0GGM9Z1Jrpr6PNPxPi+Za8OM9q4tksTSnlbXXGKK1nXNg/QvwFYettXvSX6zWKCtHHfjN4puyA==
+
 core-util-is@~1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.3.tgz#a6042d3634c2b27e9328f837b965fac83808db85"
@@ -1827,6 +1832,11 @@ data-uri-to-buffer@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-4.0.0.tgz#b5db46aea50f6176428ac05b73be39a57701a64b"
   integrity sha512-Vr3mLBA8qWmcuschSLAOogKgQ/Jwxulv3RNE4FXnYWRGujzrRWQI4m12fQqRkwX06C0KanhLr4hK+GydchZsaA==
+
+date-fns@^2.22.1:
+  version "2.29.3"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.29.3.tgz#27402d2fc67eb442b511b70bbdf98e6411cd68a8"
+  integrity sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==
 
 debug@2.6.9:
   version "2.6.9"
@@ -4763,7 +4773,22 @@ vue-router@^4.0.13, vue-router@^4.1.6:
   dependencies:
     "@vue/devtools-api" "^6.4.5"
 
-vue@^3.2.45:
+vue3-datepicker@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/vue3-datepicker/-/vue3-datepicker-0.3.4.tgz#1f406d8dc6228c06b471a1a52a8b8093238e7997"
+  integrity sha512-pD4Lixnqdr6KeIO/ZK/xdmhYDQUvMPHgTeWkNYeAx5sKY4eaNItOqbLuevwI51d3ubozhNS1y+Z8Enxi33pXiQ==
+  dependencies:
+    date-fns "^2.22.1"
+
+vue3-json-editor@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/vue3-json-editor/-/vue3-json-editor-1.1.5.tgz#1e75402e21f7e57d22f548a516874ea7cdebdd65"
+  integrity sha512-p+hbl5SdMifA9brPt9TsG2HYB7Xy7xy98b61zcIusVpwhGtS5a0IwWPKM7BXcj9poIdc/bPs4AFchQOHIBq++w==
+  dependencies:
+    core-js "^3.21.1"
+    vue "^3.2.31"
+
+vue@^3.2.31, vue@^3.2.45:
   version "3.2.45"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.2.45.tgz#94a116784447eb7dbd892167784619fef379b3c8"
   integrity sha512-9Nx/Mg2b2xWlXykmCwiTUCWHbWIj53bnkizBxKai1g61f2Xit700A1ljowpTIM11e3uipOeiPcSqnmBg6gyiaA==
