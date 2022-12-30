@@ -2,14 +2,14 @@ stages:
   - build
   - deploy_master
 
-image: "registry.gitlab.com/bicodetech/permanent-recall-frontend"
+image: node:lts-alpine
 
 build:
   tags:
     - permanent-recall-frontend
   stage: build
-  variables:
-    GIT_SUBMODULE_STRATEGY: recursive
+  # variables:
+  #   GIT_SUBMODULE_STRATEGY: recursive
   script:
     - yarn install
     - yarn private:generate
