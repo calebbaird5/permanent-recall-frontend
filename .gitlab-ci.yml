@@ -2,7 +2,7 @@ stages:
   - build
   - deploy_master
 
-image: node:lts-alpine
+image: node:lts
 
 build:
   tags:
