@@ -7,10 +7,6 @@
 </template>
 
 <script lang="ts" setup="setup">
-
-  import { ref, computed } from 'vue'
-import { useMeta } from 'vue-meta'
-
 const props = defineProps({
   error: Error,
 })
