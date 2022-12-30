@@ -24,7 +24,6 @@
 				color="#555"
 				@click="profileDrawer = !profileDrawer"
 				>
-				<!-- <img v-if="auth.user.profile" src="auth.user.profile" alt="Profile" /> -->
 				<span v-else> {{ userInitials }}</span>
 			</v-avatar>
 		</v-app-bar>
