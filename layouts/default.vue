@@ -23,9 +23,7 @@
 				v-if="auth.loggedIn && auth.user"
 				color="#555"
 				@click="profileDrawer = !profileDrawer"
-				>
-				<span v-else> {{ userInitials }}</span>
-			</v-avatar>
+				> <span> {{ userInitials }}</span> </v-avatar>
 		</v-app-bar>
 
 		<v-navigation-drawer v-model="profileDrawer" location="right" :temporary="true" >
