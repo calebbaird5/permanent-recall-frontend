@@ -24,7 +24,7 @@
 				color="#555"
 				@click="profileDrawer = !profileDrawer"
 				>
-				<img v-if="auth.user.profile" src="auth.user.profile" alt="Profile" />
+				<!-- <img v-if="auth.user.profile" src="auth.user.profile" alt="Profile" /> -->
 				<span v-else> {{ userInitials }}</span>
 			</v-avatar>
 		</v-app-bar>
@@ -53,8 +53,6 @@
 </template>
 
 <script lang="ts" setup="setup">
-  import { ref, computed } from 'vue'
-import type { Ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter();
