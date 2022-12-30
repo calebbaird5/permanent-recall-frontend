@@ -6,7 +6,7 @@ image: "registry.gitlab.com/bicodetech/permanent-recall-frontend"
 
 build:
   tags:
-    - docker
+    - permanent-recall-frontend
   stage: build
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
@@ -22,7 +22,7 @@ build:
 deploy_master:
   image: "registry.gitlab.com/bicodetech/permanent-recall-frontend"
   tags:
-    - permanent-recall
+    - permanent-recall-frontend
   stage: deploy_master
   script:
     - bash deploy/deploy.sh
