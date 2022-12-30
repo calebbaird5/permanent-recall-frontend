@@ -30,7 +30,7 @@ DEPLOY_SERVER=$DEPLOY_SERVER
 echo "deploying to ${DEPLOY_SERVER}"
 echo "${DEPLOY_SERVER}" >> ~/.ssh/known_hosts
 
-scp https://gitlab.com/home/git/gitlab/shared/artifacts/dist ec2-user@${DEPLOY_SERVER}:/home/ec2-user/html/permanent-recall-frontend
+scp ./dist ec2-user@${DEPLOY_SERVER}:/home/ec2-user/html/permanent-recall-frontend
 
 
 # ssh ec2-user@${DEPLOY_SERVER} bash -s - < ./deploy/cloneOrPull.sh

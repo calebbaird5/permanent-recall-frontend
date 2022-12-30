@@ -130,7 +130,7 @@ async function deletePassage() {
     await api.delete(passageToDelete.value._id);
     passages.value = passages.value.filter(el =>
       el._id !== passageToDelete.value._id);
-    passageToDelete = null;
+    passageToDelete.value = null;
   } catch(e) { console.error(e); }
   deleting.value = false;
   confirmDelete.value = false;
