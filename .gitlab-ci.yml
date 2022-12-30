@@ -1,0 +1,32 @@
+stages:
+  - build
+  - deploy_master
+
+image: "registry.gitlab.com/bicodetech/permanent-recall-frontend"
+
+build:
+  tags:
+    - docker
+  stage: build
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  script:
+    - yarn install
+    - yarn private:generate
+  artifacts:
+    paths:
+      - dist
+  only:
+    - master
+
+deploy_master:
+  image: "registry.gitlab.com/bicodetech/permanent-recall-frontend"
+  tags:
+    - permanent-recall
+  stage: deploy_master
+  script:
+    - bash deploy/deploy.sh
+  dependencies:
+    - build
+  only:
+    - master
