@@ -12,7 +12,7 @@ build:
   #   GIT_SUBMODULE_STRATEGY: recursive
   script:
     - yarn install
-    - yarn private:generate
+    - yarn generate
   artifacts:
     paths:
       - dist
