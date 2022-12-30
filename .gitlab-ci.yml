@@ -24,7 +24,7 @@ deploy_master:
     - permanent-recall-frontend
   stage: deploy_master
   script:
-    - bash deploy/deploy.sh
+    - bash deploy.sh
   dependencies:
     - build
   only:
