@@ -6,7 +6,7 @@ image: node:lts-alpine
 
 build:
   tags:
-    - saas-linux-medium-amd64
+    - permanent-recall-frontend
   stage: build
   # variables:
   #   GIT_SUBMODULE_STRATEGY: recursive
