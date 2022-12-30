@@ -24,6 +24,7 @@ deploy_master:
     - permanent-recall-frontend
   stage: deploy_master
   script:
+		- echo 'test echo'
     - bash ./deploy.sh
   # dependencies:
   #   - build
