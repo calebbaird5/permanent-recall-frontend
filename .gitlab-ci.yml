@@ -5,10 +5,10 @@ stages:
 image: node:lts-alpine
 
 build:
-	tags:
-		- saas-linux-medium-amd64
-	stage: build
-	# variables:
+  tags:
+    - saas-linux-medium-amd64
+  stage: build
+  # variables:
   #   GIT_SUBMODULE_STRATEGY: recursive
   script:
     - yarn install
