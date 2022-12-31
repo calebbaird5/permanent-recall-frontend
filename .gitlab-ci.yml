@@ -2,7 +2,7 @@ stages:
   - build
   - deploy_master
 
-image: node:lts
+# image: node:lts
 
 # build:
 #   tags:
