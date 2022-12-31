@@ -27,7 +27,7 @@ deploy_master:
     - echo 'test echo'
     - ls pipeline-lib
     - cat pipeline-lib/deploy.sh
-    - bash pipeline-lib/deploy.sh
+    - bash pipeline-lib/deploy.sh master ${CI_REPOSITORY_URL}
   # dependencies:
   #   - build
   only:
