@@ -1,4 +1,5 @@
 #!/bin/bash
+echo 'hello world'
 
 # any future command that fails will exit the script
 set -e
