@@ -25,6 +25,8 @@ deploy_master:
   stage: deploy_master
   script:
     - echo 'test echo'
+    - ls
+    - ls pipeline-lib
     - bash pipeline-lib/deploy.sh
   # dependencies:
   #   - build
