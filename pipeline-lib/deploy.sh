@@ -1,5 +1,4 @@
 #!/bin/bash
-echo 'hello world'
 
 # any future command that fails will exit the script
 set -e
@@ -19,8 +18,13 @@ touch ~/.ssh/known_hosts
 
 chmod 644 ~/.ssh/known_hosts
 
+echo 'before downloading private files'
 # Lets write the public key of our aws instance
-curl -s https://gitlab.com/gitlab-org/bicodetech/permanent-recall-frontend/download-secure-files/-/raw/main/installer | bash
+curl --silent "https://gitlab.com/gitlab-org/bicodetech/permanent-recall-frontend/download-secure-files/-/raw/main/installer" | bash
+
+echo 'after downloading private files'
+
+
 
 eval $(ssh-agent -s)
 echo .seure-files/permanent-recall.pem | tr -d '\r' | ssh-add - > /dev/null
