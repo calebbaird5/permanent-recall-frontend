@@ -17,6 +17,7 @@ touch ~/.ssh/known_hosts
 
 
 chmod 644 ~/.ssh/known_hosts
+eval $(ssh-agent -s)
 
 echo 'before downloading private files'
 # Lets write the public key of our aws instance
@@ -27,8 +28,7 @@ echo 'after downloading private files'
 
 
 
-eval $(ssh-agent -s)
-echo .seure-files/permanent-recall.pem | tr -d '\r' | ssh-add - > /dev/null
+# echo .seure-files/permanent-recall.pem | tr -d '\r' | ssh-add - > /dev/null
 
 # Use the gitlab variable for the ip address to deploy to.
 DEPLOY_SERVER=$DEPLOY_SERVER
