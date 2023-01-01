@@ -2,22 +2,22 @@ stages:
   - build
   - deploy_master
 
-# image: node:lts
+image: node:lts
 
-# build:
-#   tags:
-#     - permanent-recall-frontend
-#   stage: build
-#   # variables:
-#   #   GIT_SUBMODULE_STRATEGY: recursive
-#   script:
-#     - yarn install
-#     - yarn generate
-#   artifacts:
-#     paths:
-#       - dist
-#   only:
-#     - master
+build:
+  tags:
+    - permanent-recall-frontend
+  stage: build
+  # variables:
+  #   GIT_SUBMODULE_STRATEGY: recursive
+  script:
+    - yarn install
+    - yarn generate
+  artifacts:
+    paths:
+      - dist
+  only:
+    - master
 
 deploy_master:
   tags:
@@ -25,7 +25,7 @@ deploy_master:
   stage: deploy_master
   script:
     - bash pipeline-lib/deploy.sh
-  # dependencies:
-  #   - build
+  dependencies:
+    - build
   only:
     - master

@@ -19,14 +19,9 @@ touch ~/.ssh/known_hosts
 chmod 644 ~/.ssh/known_hosts
 eval $(ssh-agent -s)
 
-echo 'before downloading private files'
 # Lets write the public key of our aws instance
 # curl --silent "https://gitlab.com/gitlab-org/bicodetech/permanent-recall-frontend/download-secure-files/-/raw/main/installer" | bash
 echo "$DEPLOY_KEY" | tr -d '\r' | ssh-add - > /dev/null
-
-echo 'after downloading private files'
-
-
 
 # echo .seure-files/permanent-recall.pem | tr -d '\r' | ssh-add - > /dev/null
 
@@ -36,8 +31,7 @@ DEPLOY_SERVER=$DEPLOY_SERVER
 echo "deploying to ${DEPLOY_SERVER}"
 echo "${DEPLOY_SERVER}" >> ~/.ssh/known_hosts
 
-scp ./dist ec2-user@${DEPLOY_SERVER}:/home/ec2-user/html/permanent-recall-frontend
-
+scp ./dist ec2-user@${DEPLOY_SERVER}:/home/ec2-user/permanent-recall-frontend
 
 # ssh ec2-user@${DEPLOY_SERVER} bash -s - < ./deploy/cloneOrPull.sh
 # echo "Sending the develop .env file"
