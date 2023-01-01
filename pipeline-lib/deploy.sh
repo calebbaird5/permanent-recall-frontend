@@ -20,7 +20,8 @@ chmod 644 ~/.ssh/known_hosts
 
 echo 'before downloading private files'
 # Lets write the public key of our aws instance
-curl --silent "https://gitlab.com/gitlab-org/bicodetech/permanent-recall-frontend/download-secure-files/-/raw/main/installer" | bash
+# curl --silent "https://gitlab.com/gitlab-org/bicodetech/permanent-recall-frontend/download-secure-files/-/raw/main/installer" | bash
+echo "$DEPLOY_KEY" | tr -d '\r' | ssh-add - > /dev/null
 
 echo 'after downloading private files'
 
