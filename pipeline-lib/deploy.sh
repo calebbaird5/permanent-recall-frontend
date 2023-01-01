@@ -31,7 +31,8 @@ DEPLOY_SERVER=$DEPLOY_SERVER
 echo "deploying to ${DEPLOY_SERVER}"
 echo "${DEPLOY_SERVER}" >> ~/.ssh/known_hosts
 
-scp ./dist ec2-user@${DEPLOY_SERVER}:/home/ec2-user/permanent-recall-frontend
+cp ./dist /home/ec2-user/permanent-recall-frontend
+echo 'successfully copied dist'
 
 # ssh ec2-user@${DEPLOY_SERVER} bash -s - < ./deploy/cloneOrPull.sh
 # echo "Sending the develop .env file"
