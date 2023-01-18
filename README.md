@@ -1,6 +1,5 @@
 # Permanent-Recall Frontend
 
-Running nuxt 3 candidate
 Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
 
 ## Setup
