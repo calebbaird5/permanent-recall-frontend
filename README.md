@@ -1,15 +1,14 @@
-# Permanent-Recall Frontend
+# Permanent-Recall-Frontend
+This repository contains the code for the **frontend** of the Permanent Recall Web Application. It is written in typescript using **Vue3** and the **Nuxt,** and **Vuetify** frameworks.
 
-Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
+The new Composition API is used including compostables and setup scripts.
+
+### Documentation
+- [vue 3](https://vuejs.org)
+- [nuxt 3](https://v3.nuxtjs.org)
+- [vuetify 3](https://next.vuetifyjs.com/en)
+
 
 ## Setup
 
-Make sure to install the dependencies:
-
-```bash
-# yarn
-yarn install
-
-# npm
-npm install
-```
+This is designed to be run in a docker container in conjunction with the backend, database, and nginx services. see the [web-suite](../.) repository for details.
