@@ -11,4 +11,4 @@ The new Composition API is used including compostables and setup scripts.
 
 ## Setup
 
-This is designed to be run in a docker container in conjunction with the backend, database, and nginx services. see the [web-suite](../.) repository for details.
+This is designed to be run in a docker container in conjunction with the backend, database, and nginx services. see the [web-suite](Permanent-Recall-Web-Suite) repository for details.
